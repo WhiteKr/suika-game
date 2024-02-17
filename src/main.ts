@@ -74,17 +74,22 @@ window.onkeydown = (event) => {
 
   switch (event.code) {
     case "KeyA":
-      Body.setPosition(currentBody, {
-        x: currentBody.position.x - 10,
-        y: currentBody.position.y,
-      });
+      if (currentBody.position.x - (currentFruit?.radius ?? 0) > wallWidth)
+        Body.setPosition(currentBody, {
+          x: currentBody.position.x - 10,
+          y: currentBody.position.y,
+        });
       break;
 
     case "KeyD":
-      Body.setPosition(currentBody, {
-        x: currentBody.position.x + 10,
-        y: currentBody.position.y,
-      });
+      if (
+        currentBody.position.x + (currentFruit?.radius ?? 0) <
+        worldWidth - wallWidth
+      )
+        Body.setPosition(currentBody, {
+          x: currentBody.position.x + 10,
+          y: currentBody.position.y,
+        });
       break;
 
     case "KeyS":
