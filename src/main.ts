@@ -1,24 +1,42 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import { Bodies, Engine, Render, Runner, World } from "matter-js";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+// setup world
+const [worldHeight, worldWidth]: number[] = [850, 620];
+const worldBackgroundColor: string = "#F7F4C8";
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const engine: Engine = Engine.create();
+const render: Render = Render.create({
+  engine,
+  element: document.body,
+  options: {
+    background: worldBackgroundColor,
+    height: worldHeight,
+    width: worldWidth,
+    wireframes: false,
+  },
+});
+const world: World = engine.world;
+
+// setup wall
+const wallBackgroundColor: string = "#E6B143";
+const wallWidth: number = 10;
+const groundWidth: number = 20;
+const topLinePosition: number = 130;
+
+const wallPositions: [number, number, number, number][] = [
+  [wallWidth / 2, worldHeight / 2, wallWidth, worldHeight], // left wall
+  [worldWidth - wallWidth / 2, worldHeight / 2, wallWidth, worldHeight], // right wall
+  [worldWidth / 2, worldHeight - groundWidth / 2, worldWidth, groundWidth], // ground
+  [worldWidth / 2, topLinePosition, worldWidth, 2], // top line
+];
+const walls: Matter.Body[] = wallPositions.map((pos: number[]) =>
+  Bodies.rectangle(pos[0], pos[1], pos[2], pos[3], {
+    isStatic: true,
+    render: { fillStyle: wallBackgroundColor },
+  }),
+);
+
+World.add(world, walls);
+
+Render.run(render);
+Runner.run(engine);

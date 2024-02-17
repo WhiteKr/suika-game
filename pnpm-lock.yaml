@@ -8,6 +8,9 @@ dependencies:
   '@types/matter-js':
     specifier: ^0.19.6
     version: 0.19.6
+  matter-js:
+    specifier: ^0.19.0
+    version: 0.19.0
 
 devDependencies:
   typescript:
@@ -376,6 +379,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /matter-js@0.19.0:
+    resolution: {integrity: sha512-v2huwvQGOHTGOkMqtHd2hercCG3f6QAObTisPPHg8TZqq2lz7eIY/5i/5YUV8Ibf3mEioFEmwibcPUF2/fnKKQ==}
+    dev: false
 
   /nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
