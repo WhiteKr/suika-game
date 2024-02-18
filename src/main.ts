@@ -47,19 +47,38 @@ let currentBody: Body | null = null;
 let currentFruit: Fruit | null = null;
 let disableAction: boolean = false;
 
+const createFruitBody = (
+  x: number,
+  y: number,
+  fruit: Fruit,
+  isSleeping: boolean = false,
+  isSensor: boolean = false,
+): Body => {
+  const body: Body = Bodies.circle(x, y, fruit.radius, {
+    label: fruit.name,
+    render: {
+      sprite: {
+        texture: `${fruit.name}.png`,
+        xScale: fruit.scale,
+        yScale: fruit.scale,
+      },
+    },
+    restitution: 0.2,
+    isSleeping,
+    isSensor,
+  });
+
+  return body;
+};
+
 /**
  * Add a random fruit to the world.
  **/
 const addFruit = (): void => {
-  const index: number = (Math.random() * 5) | 0;
+  const index: number = (Math.random() * Math.min(FRUITS.length / 3, 5)) | 0;
   const fruit: Fruit = FRUITS[index];
 
-  const body: Body = Bodies.circle(300, 50, fruit.radius, {
-    label: fruit.name,
-    render: { fillStyle: fruit.color },
-    restitution: 0.2,
-    isSleeping: true,
-  });
+  const body: Body = createFruitBody(300, 50, fruit, true);
 
   currentBody = body;
   currentFruit = fruit;
@@ -107,27 +126,23 @@ window.onkeydown = (event) => {
 // setup on collision event
 Events.on(engine, "collisionStart", (event: Matter.IEventCollision<Engine>) => {
   event.pairs.forEach((collision) => {
-    if (collision.bodyA.label === collision.bodyB.label) {
-      const index: number = FRUITS.findIndex(
-        (fruit: Fruit) => fruit.name === collision.bodyA.label,
-      );
-      if (index === FRUITS.length + 1) return;
+    if (collision.bodyA.label !== collision.bodyB.label) return;
 
-      World.remove(world, [collision.bodyA, collision.bodyB]);
+    const index: number = FRUITS.findIndex((fruit: Fruit) => {
+      return fruit.name === collision.bodyA.label;
+    });
+    if (index === FRUITS.length - 1) return;
 
-      const newFruit: Fruit = FRUITS[index + 1];
-      const newBody: Body = Bodies.circle(
-        collision.collision.supports[0].x,
-        collision.collision.supports[0].y,
-        newFruit.radius,
-        {
-          label: newFruit.name,
-          render: { fillStyle: newFruit.color },
-        },
-      );
+    World.remove(world, [collision.bodyA, collision.bodyB]);
 
-      World.add(world, newBody);
-    }
+    const newFruit: Fruit = FRUITS[index + 1];
+    const newBody: Body = createFruitBody(
+      collision.collision.supports[0].x,
+      collision.collision.supports[0].y,
+      newFruit,
+    );
+
+    World.add(world, newBody);
   });
 });
 

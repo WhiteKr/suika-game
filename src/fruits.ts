@@ -1,63 +1,63 @@
 export type Fruit = {
   name: string;
-  color: string;
   radius: number;
+  scale: number;
 };
 
 export const FRUITS: Fruit[] = [
   {
-    name: "cherry",
-    color: "red",
+    name: "blueberry",
     radius: 33 / 2,
+    scale: 0.13,
   },
+  // {
+  //   name: "strawberry",
+  //   radius: 48 / 2,
+  //   scale: 0.18,
+  // },
+  // {
+  //   name: "strawberry",
+  //   radius: 61 / 2,
+  //   scale: 0.07,
+  // },
   {
     name: "strawberry",
-    color: "orangered",
-    radius: 48 / 2,
-  },
-  {
-    name: "grape",
-    color: "purple",
-    radius: 61 / 2,
-  },
-  {
-    name: "mandarin",
-    color: "orange",
     radius: 69 / 2,
+    scale: 0.34,
   },
+  // {
+  //   name: "koreanwatermelon",
+  //   radius: 89 / 2,
+  //   scale: 0.27,
+  // },
+  // {
+  //   name: "blueberry",
+  //   radius: 114 / 2,
+  //   scale: 0.4,
+  // },
+  // {
+  //   name: "strawberry",
+  //   radius: 129 / 2,
+  //   scale: 0.5,
+  // },
   {
-    name: "orange",
-    color: "darkorange",
-    radius: 89 / 2,
-  },
-  {
-    name: "apple",
-    color: "red",
-    radius: 114 / 2,
-  },
-  {
-    name: "pear",
-    color: "yellow",
-    radius: 129 / 2,
-  },
-  {
-    name: "peach",
-    color: "pink",
+    name: "kiwi",
     radius: 156 / 2,
+    scale: 0.17,
   },
   {
-    name: "pineapple",
-    color: "yellow",
+    name: "persimmon",
     radius: 177 / 2,
+    scale: 0.27,
   },
   {
-    name: "melon",
-    color: "lightgreen",
+    name: "koreanwatermelon",
     radius: 220 / 2,
+    scale: 0.47,
   },
   {
-    name: "watermelon",
-    color: "green",
+    name: "saroroinsa",
     radius: 259 / 2,
+    scale: 0.275,
   },
 ];
