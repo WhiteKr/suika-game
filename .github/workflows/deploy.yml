@@ -38,6 +38,10 @@ jobs:
         run: pnpm install
       - name: Build project
         run: pnpm run build
+      - name: Move built files to Pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
 
   deploy:
     name: Deploy
@@ -46,16 +50,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy to GitHub Pages
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          cp -R dist/* .
-          git add .
-          git commit -m "Deploy from build"
-          git push origin gh-pages:gh-pages
+      - run: ls -la
+
+      # - name: Deploy to GitHub Pages
+      #   uses: actions/checkout@v4
+      #   with:
+      #     ref: gh-pages
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - run: |
+      #     git config --global user.name "GitHub Actions"
+      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      #     cp -R dist/* .
+      #     git add .
+      #     git commit -m "Deploy from build"
+      #     git push origin gh-pages:gh-pages
