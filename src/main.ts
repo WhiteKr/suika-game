@@ -24,19 +24,46 @@ const wallWidth: number = 10;
 const groundWidth: number = 20;
 const topLinePosition: number = 130;
 
-const wallPositions: [number, number, number, number, boolean?][] = [
-  [wallWidth / 2, worldHeight / 2, wallWidth, worldHeight], // left wall
-  [worldWidth - wallWidth / 2, worldHeight / 2, wallWidth, worldHeight], // right wall
-  [worldWidth / 2, worldHeight - groundWidth / 2, worldWidth, groundWidth], // ground
-  [worldWidth / 2, topLinePosition, worldWidth, 2, true], // top line
-];
-const walls: Matter.Body[] = wallPositions.map((pos) =>
-  Bodies.rectangle(pos[0], pos[1], pos[2], pos[3], {
+const createRectangleBody = (
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  isSensor: boolean = false,
+): Matter.Body => {
+  return Bodies.rectangle(x, y, width, height, {
     isStatic: true,
-    isSensor: pos[4] ?? false,
+    isSensor,
     render: { fillStyle: wallBackgroundColor },
-  }),
+  });
+};
+
+const leftWall: Matter.Body = createRectangleBody(
+  wallWidth / 2,
+  worldHeight / 2,
+  wallWidth,
+  worldHeight,
 );
+const rightWall: Matter.Body = createRectangleBody(
+  worldWidth - wallWidth / 2,
+  worldHeight / 2,
+  wallWidth,
+  worldHeight,
+);
+const bottomGround: Matter.Body = createRectangleBody(
+  worldWidth / 2,
+  worldHeight - groundWidth / 2,
+  worldWidth,
+  groundWidth,
+);
+const topSensor: Matter.Body = createRectangleBody(
+  worldWidth / 2,
+  topLinePosition,
+  worldWidth,
+  2,
+  true,
+);
+const walls: Matter.Body[] = [leftWall, rightWall, bottomGround, topSensor];
 
 World.add(world, walls);
 
@@ -71,10 +98,7 @@ const createFruitBody = (
   return body;
 };
 
-/**
- * Add a random fruit to the world.
- **/
-const addFruit = (): void => {
+const dropRandomFruit = (): void => {
   const index: number = (Math.random() * Math.min(FRUITS.length / 3, 5)) | 0;
   const fruit: Fruit = FRUITS[index];
 
@@ -86,7 +110,6 @@ const addFruit = (): void => {
   World.add(world, body);
 };
 
-// setup controls
 window.onkeydown = (event) => {
   if (currentBody === null) return;
   if (disableAction) return;
@@ -116,14 +139,13 @@ window.onkeydown = (event) => {
       disableAction = true;
 
       setTimeout(() => {
-        addFruit();
+        dropRandomFruit();
         disableAction = false;
       }, 1000);
       break;
   }
 };
 
-// setup on collision event
 Events.on(engine, "collisionStart", (event: Matter.IEventCollision<Engine>) => {
   event.pairs.forEach((collision) => {
     if (collision.bodyA.label !== collision.bodyB.label) return;
@@ -146,4 +168,4 @@ Events.on(engine, "collisionStart", (event: Matter.IEventCollision<Engine>) => {
   });
 });
 
-addFruit();
+dropRandomFruit();
