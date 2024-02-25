@@ -1,5 +1,14 @@
 import { Bodies, Body, Engine, Events, Render, Runner, World } from "matter-js";
 import { FRUITS, Fruit } from "./fruits";
+import getBlobFromUrl from "./utils/getBlobFromUrl";
+
+const urls: { [name: string]: string } = {};
+FRUITS.forEach(async (fruit: Fruit) => {
+  const blob: Blob = await getBlobFromUrl(`${fruit.name}.png`);
+  const blobUrl: string = URL.createObjectURL(blob);
+
+  urls[fruit.name] = blobUrl;
+});
 
 const [worldHeight, worldWidth]: number[] = [850, 620];
 const worldBackgroundColor: string = "#F7F4C8";
@@ -83,7 +92,7 @@ const createFruitBody = (
     label: fruit.name,
     render: {
       sprite: {
-        texture: `${fruit.name}.png`,
+        texture: urls[fruit.name] || `${fruit.name}.png`,
         xScale: fruit.scale,
         yScale: fruit.scale,
       },
