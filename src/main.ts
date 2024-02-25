@@ -1,7 +1,6 @@
 import { Bodies, Body, Engine, Events, Render, Runner, World } from "matter-js";
 import { FRUITS, Fruit } from "./fruits";
 
-// setup world
 const [worldHeight, worldWidth]: number[] = [850, 620];
 const worldBackgroundColor: string = "#F7F4C8";
 
@@ -18,7 +17,6 @@ const render: Render = Render.create({
 });
 const world: World = engine.world;
 
-// setup wall
 const wallBackgroundColor: string = "#E6B143";
 const wallWidth: number = 10;
 const groundWidth: number = 20;
